@@ -122,23 +122,33 @@ export default function Projects() {
                     style={{ backgroundImage: `url(${project.imageUrl})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
-                  {/* サイドリボン */}
-                  <div className={`
-                    absolute left-0 top-0 h-full w-24
-                    bg-gradient-to-br 
-                    ${categoryConfig[project.subCategory ?? ""]?.bgFrom ?? "from-gray-600"} 
-                    ${categoryConfig[project.subCategory ?? ""]?.bgTo ?? "to-gray-500"}
-                    flex flex-col items-center justify-start
-                    p-4 text-white shadow-lg
-                    transition-all duration-300 group-hover:w-32
-                  `}>
-                    <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
-                      {categoryConfig[project.subCategory ?? ""]?.icon}
-                    </span>
-                    <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
-                      {project.subCategory}
+                  {/* カテゴリー表示 */}
+                  {project.subCategory ? (
+                    // サイドリボン（カテゴリーがある場合）
+                    <div className={`
+                      absolute left-0 top-0 h-full w-24
+                      bg-gradient-to-br 
+                      ${categoryConfig[project.subCategory]?.bgFrom ?? "from-gray-600"} 
+                      ${categoryConfig[project.subCategory]?.bgTo ?? "to-gray-500"}
+                      flex flex-col items-center justify-start
+                      p-4 text-white shadow-lg
+                      transition-all duration-300 group-hover:w-32
+                    `}>
+                      <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
+                        {categoryConfig[project.subCategory]?.icon}
+                      </span>
+                      <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
+                        {project.subCategory}
+                      </div>
                     </div>
-                  </div>
+                  ) : (
+                    // シンプルなバッジ（カテゴリーがない場合）
+                    <div className="absolute top-4 left-4">
+                      <Badge variant="secondary" className="bg-white/90">
+                        {project.category}
+                      </Badge>
+                    </div>
+                  )}
                 </div>
                 <CardHeader>
                   <CardTitle className="group-hover:text-primary transition-colors flex items-center gap-2">

@@ -102,26 +102,36 @@ export default function ProjectTimeline() {
                               className="aspect-video bg-cover bg-center"
                               style={{ backgroundImage: `url(${project.imageUrl})` }}
                             />
-                            {/* サイドリボン */}
-                            <div className={`
-                              absolute left-0 top-0 h-full w-24
-                              bg-gradient-to-br 
-                              ${categoryConfig[project.subCategory ?? ""]?.bgFrom ?? "from-gray-600"} 
-                              ${categoryConfig[project.subCategory ?? ""]?.bgTo ?? "to-gray-500"}
-                              flex flex-col items-center justify-start
-                              p-4 text-white shadow-lg
-                              transition-all duration-300 group-hover:w-32
-                            `}>
-                              <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
-                                {categoryConfig[project.subCategory ?? ""]?.icon}
-                              </span>
-                              <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
-                                {project.subCategory}
+                            {/* カテゴリー表示 */}
+                            {project.subCategory ? (
+                              // サイドリボン（カテゴリーがある場合）
+                              <div className={`
+                                absolute left-0 top-0 h-full w-24
+                                bg-gradient-to-br 
+                                ${categoryConfig[project.subCategory]?.bgFrom ?? "from-gray-600"} 
+                                ${categoryConfig[project.subCategory]?.bgTo ?? "to-gray-500"}
+                                flex flex-col items-center justify-start
+                                p-4 text-white shadow-lg
+                                transition-all duration-300 group-hover:w-32
+                              `}>
+                                <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
+                                  {categoryConfig[project.subCategory]?.icon}
+                                </span>
+                                <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
+                                  {project.subCategory}
+                                </div>
                               </div>
-                            </div>
+                            ) : (
+                              // シンプルなバッジ（カテゴリーがない場合）
+                              <div className="absolute top-4 left-4">
+                                <Badge variant="secondary" className="bg-white/90">
+                                  {project.category}
+                                </Badge>
+                              </div>
+                            )}
                           </div>
                           <CardHeader>
-                            <CardTitle className="line-clamp-2">{project.title}</CardTitle>
+                            <CardTitle>{project.title}</CardTitle>
                             <CardDescription>
                               {project.location} ・{" "}
                               {format(new Date(project.completionDate), "yyyy年MM月完工", {
@@ -133,14 +143,6 @@ export default function ProjectTimeline() {
                             <p className="text-sm text-muted-foreground line-clamp-2">
                               {project.description}
                             </p>
-                            {project.technicalHighlights && (
-                              <div className="mt-4 text-sm">
-                                <strong className="text-primary">技術的特徴：</strong>
-                                <p className="text-muted-foreground line-clamp-2">
-                                  {project.technicalHighlights}
-                                </p>
-                              </div>
-                            )}
                           </CardContent>
                         </Card>
                       </motion.div>
