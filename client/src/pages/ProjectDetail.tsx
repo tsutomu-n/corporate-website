@@ -34,6 +34,8 @@ import {
 import type { Project } from "@db/schema";
 import RelatedProjects from "@/components/sections/RelatedProjects";
 
+// 以下のコードは変更なし
+
 // 施工プロセスの状態定義
 type ProcessStatus = "completed" | "inProgress" | "upcoming";
 
