@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import type { Project } from "@db/schema";
-import { FadeIn } from "@/components/ui/fade-in";
+import { FadeIn, FadeInStagger } from "@/components/ui/fade-in";
 
 // 地域ごとの実績データ型定義
 type RegionData = {
@@ -36,61 +36,68 @@ export default function RegionalContribution() {
   });
 
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="container">
+    <section className="relative py-24">
+      <div className="absolute inset-0 bg-gradient-to-t from-gray-50/80 to-white" />
+      <div className="container relative">
         <FadeIn>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">地域インフラへの貢献</h2>
-            <p className="text-muted-foreground">
-              全国各地のインフラ整備を通じて、<br />
+          <div className="max-w-2xl mx-auto text-center mb-16">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+              地域インフラへの貢献
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              全国各地のインフラ整備を通じて、<br className="hidden sm:inline" />
               地域社会の発展と安全に貢献しています
             </p>
           </div>
         </FadeIn>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
           {/* 日本地図表示エリア */}
-          <div className="relative aspect-square bg-white rounded-xl shadow-lg p-8">
+          <div className="relative aspect-square bg-gradient-to-br from-white to-gray-50 rounded-2xl shadow-lg p-8">
             <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
               ※ 実装時に日本地図SVGを配置
             </div>
           </div>
 
           {/* 地域別実績リスト */}
-          <div className="space-y-8">
+          <FadeInStagger className="space-y-6">
             {regions.map((region) => (
-              <motion.div
-                key={region.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-lg p-6 shadow-sm"
-              >
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-xl font-bold">{region.name}</h3>
-                  <span className="text-2xl font-bold text-primary">
-                    {region.projectCount}
-                    <span className="text-sm ml-1">件</span>
-                  </span>
-                </div>
-                <ul className="space-y-2 text-sm text-muted-foreground mb-4">
-                  {region.majorProjects.map((project) => (
-                    <li key={project} className="flex items-center">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mr-2" />
-                      {project}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
+              <FadeIn key={region.id}>
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  className="bg-gradient-to-br from-white to-gray-50/80 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-xl font-bold">{region.name}</h3>
+                    <span className="text-2xl font-bold text-primary">
+                      {region.projectCount}
+                      <span className="text-sm ml-1">件</span>
+                    </span>
+                  </div>
+                  <ul className="space-y-3">
+                    {region.majorProjects.map((project) => (
+                      <li key={project} className="flex items-center text-muted-foreground">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mr-3" />
+                        {project}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              </FadeIn>
             ))}
-          </div>
+          </FadeInStagger>
         </div>
 
-        <div className="text-center mt-12">
-          <Button size="lg" variant="outline" asChild>
-            <Link href="/projects">すべての施工実績を見る<ArrowRight className="ml-2 h-4 w-4" /></Link>
-          </Button>
-        </div>
+        <FadeIn>
+          <div className="text-center">
+            <Button size="lg" variant="outline" asChild>
+              <Link href="/projects" className="group">
+                すべての施工実績を見る
+                <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </div>
+        </FadeIn>
       </div>
     </section>
   );
