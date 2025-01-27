@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "wouter";
 import type { Project } from "@db/schema";
 
 const categories = [
@@ -100,9 +101,11 @@ export default function Projects() {
                   </CardContent>
                   {/* View Details Overlay */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <Button variant="default" className="bg-white text-black hover:bg-white/90">
-                      詳細を見る
-                    </Button>
+                    <Link href={`/projects/${project.id}`}>
+                      <Button variant="default" className="bg-white text-black hover:bg-white/90">
+                        詳細を見る
+                      </Button>
+                    </Link>
                   </div>
                 </Card>
               ))}

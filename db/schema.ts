@@ -1,4 +1,4 @@
-import { pgTable, text, serial, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar, integer, decimal } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
 export const projects = pgTable("projects", {
@@ -11,6 +11,17 @@ export const projects = pgTable("projects", {
   afterImageUrl: text("after_image_url"),
   completionDate: timestamp("completion_date").notNull(),
   location: text("location").notNull(),
+  // 新しいフィールド
+  startDate: timestamp("start_date"),
+  budget: decimal("budget", { precision: 12, scale: 2 }),
+  area: decimal("area", { precision: 10, scale: 2 }),
+  contractorComment: text("contractor_comment"),
+  environmentalMeasures: text("environmental_measures"),
+  safetyMeasures: text("safety_measures"),
+  awards: text("awards"),
+  mediaLinks: text("media_links"),
+  technicalHighlights: text("technical_highlights"),
+  challengesSolutions: text("challenges_solutions"),
 });
 
 export const news = pgTable("news", {
