@@ -1,3 +1,4 @@
+import React from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "wouter";
 import {
@@ -13,47 +14,119 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import BeforeAfterSlider from "@/components/ui/before-after-slider";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
-import { motion } from "framer-motion";
-import { 
-  Clock, 
-  Wrench, 
-  Target,
-  Banknote,
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Clock,
+  CheckCircle2,
+  CircleDot,
+  AlertCircle,
   Calendar,
   Maximize,
   Award,
   Newspaper,
   Shield,
-  Leaf
+  Leaf,
+  Wrench,
+  HardHat,
+  Truck,
+  CheckSquare
 } from "lucide-react";
 import type { Project } from "@db/schema";
 import RelatedProjects from "@/components/sections/RelatedProjects";
 
-const constructionProcess = [
+// 施工プロセスの状態定義
+type ProcessStatus = "completed" | "inProgress" | "upcoming";
+
+interface ConstructionProcess {
+  phase: string;
+  date: string;
+  description: string;
+  details: string[];
+  status: ProcessStatus;
+  icon: keyof typeof processIcons;
+}
+
+// プロセスのアイコン定義
+const processIcons = {
+  planning: HardHat,
+  preparation: Wrench,
+  foundation: Truck,
+  construction: Truck,
+  completion: CheckSquare,
+} as const;
+
+// プロセスの状態に応じた色とアイコン
+const statusConfig: Record<ProcessStatus, { color: string; Icon: any }> = {
+  completed: { color: "text-green-500", Icon: CheckCircle2 },
+  inProgress: { color: "text-blue-500", Icon: CircleDot },
+  upcoming: { color: "text-gray-400", Icon: AlertCircle },
+};
+
+const constructionProcess: ConstructionProcess[] = [
   {
-    phase: "準備工事",
+    phase: "計画立案",
     date: "2023-04",
     description: "現場調査、施工計画の立案",
+    details: [
+      "現地調査と環境アセスメントの実施",
+      "地質調査と土壌分析",
+      "施工計画書の作成と承認",
+      "必要な許認可の取得"
+    ],
+    status: "completed",
+    icon: "planning"
+  },
+  {
+    phase: "準備工事",
+    date: "2023-06",
+    description: "仮設工事、安全対策の実施",
+    details: [
+      "仮設事務所の設置",
+      "安全フェンスと警告標識の設置",
+      "建設機械の搬入",
+      "現場周辺の安全確保"
+    ],
+    status: "completed",
+    icon: "preparation"
   },
   {
     phase: "基礎工事",
-    date: "2023-06",
+    date: "2023-08",
     description: "地盤改良、基礎コンクリート打設",
+    details: [
+      "掘削工事の実施",
+      "地盤改良材の注入",
+      "鉄筋組立て",
+      "基礎コンクリートの打設"
+    ],
+    status: "inProgress",
+    icon: "foundation"
   },
   {
     phase: "本体工事",
-    date: "2023-08",
-    description: "主要構造物の施工",
-  },
-  {
-    phase: "仕上げ工事",
     date: "2023-10",
-    description: "舗装工事、安全施設の設置",
+    description: "主要構造物の施工",
+    details: [
+      "主要構造物の建設",
+      "配管・配線工事",
+      "防水工事",
+      "品質検査の実施"
+    ],
+    status: "upcoming",
+    icon: "construction"
   },
   {
     phase: "完成",
     date: "2023-12",
     description: "検査、引き渡し",
+    details: [
+      "最終検査の実施",
+      "必要書類の作成",
+      "清掃と片付け",
+      "引き渡し式の実施"
+    ],
+    status: "upcoming",
+    icon: "completion"
   },
 ];
 
@@ -163,7 +236,7 @@ export default function ProjectDetail() {
 
                   {project.budget && (
                     <div className="flex items-start gap-3">
-                      <Banknote className="h-5 w-5 text-primary mt-0.5" />
+                      <Calendar className="h-5 w-5 text-primary mt-0.5" />
                       <div>
                         <div className="font-medium">予算規模</div>
                         <div className="text-sm text-muted-foreground">
@@ -213,17 +286,6 @@ export default function ProjectDetail() {
                     )}
                   </div>
                 )}
-
-                {project.contractorComment && (
-                  <div className="pt-6 border-t">
-                    <div className="bg-muted/50 p-6 rounded-lg">
-                      <h3 className="font-medium mb-3">施工担当者のコメント</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {project.contractorComment}
-                      </p>
-                    </div>
-                  </div>
-                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -249,7 +311,7 @@ export default function ProjectDetail() {
                 {project.challengesSolutions && (
                   <div>
                     <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                      <Target className="h-5 w-5" />
+                      <Wrench className="h-5 w-5" />
                       課題と解決策
                     </h3>
                     <div className="text-sm text-muted-foreground">
@@ -265,6 +327,9 @@ export default function ProjectDetail() {
             <Card>
               <CardHeader>
                 <CardTitle>施工プロセス</CardTitle>
+                <CardDescription>
+                  プロジェクトの進行状況と各フェーズの詳細をご確認いただけます
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-8">
@@ -274,20 +339,76 @@ export default function ProjectDetail() {
                       initial={{ opacity: 0, x: -50 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
-                      className="flex gap-4 relative before:absolute before:left-[17px] before:top-10 before:h-full before:w-[2px] before:bg-border last:before:hidden"
+                      className="relative"
                     >
-                      <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                        <Clock className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="pb-8">
-                        <div className="font-medium">
-                          {step.phase}
-                          <span className="text-sm text-muted-foreground ml-2">
-                            {step.date}
-                          </span>
+                      {/* 接続線 */}
+                      {index < constructionProcess.length - 1 && (
+                        <div className="absolute left-[17px] top-10 h-full w-[2px] bg-border" />
+                      )}
+
+                      <div className="flex gap-4">
+                        {/* アイコンと状態表示 */}
+                        <div className="relative">
+                          <div className={`
+                            h-9 w-9 rounded-full 
+                            ${step.status === 'completed' ? 'bg-primary/10' : 'bg-muted'}
+                            flex items-center justify-center shrink-0
+                          `}>
+                            {React.createElement(processIcons[step.icon], {
+                              className: `h-5 w-5 ${step.status === 'completed' ? 'text-primary' : 'text-muted-foreground'}`
+                            })}
+                          </div>
+                          {/* 状態インジケーター */}
+                          <div className={`
+                            absolute -right-1 -bottom-1 h-4 w-4 rounded-full bg-white
+                            flex items-center justify-center
+                            border-2 border-background
+                          `}>
+                            {React.createElement(statusConfig[step.status].Icon, {
+                              className: `h-3 w-3 ${statusConfig[step.status].color}`
+                            })}
+                          </div>
                         </div>
-                        <div className="text-muted-foreground mt-1">
-                          {step.description}
+
+                        {/* コンテンツ */}
+                        <div className="flex-1 pb-8">
+                          <div className="flex items-center justify-between mb-2">
+                            <div className="font-medium text-lg">
+                              {step.phase}
+                            </div>
+                            <Badge variant="outline">
+                              {step.date}
+                            </Badge>
+                          </div>
+                          <p className="text-muted-foreground mb-4">
+                            {step.description}
+                          </p>
+
+                          {/* 詳細情報（アコーディオン） */}
+                          <AnimatePresence>
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="bg-muted/50 rounded-lg p-4"
+                            >
+                              <ul className="space-y-2">
+                                {step.details.map((detail, i) => (
+                                  <motion.li
+                                    key={i}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: i * 0.1 }}
+                                    className="flex items-center gap-2 text-sm text-muted-foreground"
+                                  >
+                                    <div className="h-1.5 w-1.5 rounded-full bg-primary/50" />
+                                    {detail}
+                                  </motion.li>
+                                ))}
+                              </ul>
+                            </motion.div>
+                          </AnimatePresence>
                         </div>
                       </div>
                     </motion.div>
