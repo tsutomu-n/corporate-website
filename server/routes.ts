@@ -5,6 +5,33 @@ import { projects, news, contactSubmissions } from "@db/schema";
 import { eq, desc } from "drizzle-orm";
 
 export function registerRoutes(app: Express): Server {
+  // Get featured projects (for homepage showcase)
+  app.get("/api/projects/featured", async (_req, res) => {
+    try {
+      const featuredProjects = await db.query.projects.findMany({
+        orderBy: desc(projects.completionDate),
+        limit: 4,
+        where: eq(projects.featured, true),
+      });
+      res.json(featuredProjects);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch featured projects" });
+    }
+  });
+
+  // Get projects by region (for regional contribution map)
+  app.get("/api/projects/by-region", async (_req, res) => {
+    try {
+      const projectsByRegion = await db.query.projects.findMany({
+        orderBy: desc(projects.completionDate),
+        where: eq(projects.completed, true),
+      });
+      res.json(projectsByRegion);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch projects by region" });
+    }
+  });
+
   // Get recent projects (for homepage)
   app.get("/api/projects/recent", async (_req, res) => {
     try {
