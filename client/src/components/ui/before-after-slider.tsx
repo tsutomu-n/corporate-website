@@ -53,6 +53,10 @@ export default function BeforeAfterSlider({
     );
   }
 
+  const handleSliderChange = (value: number[]) => {
+    setPosition(value[0]);
+  };
+
   return (
     <div className={cn("relative h-[400px] select-none group", className)}>
       {/* After Image (Background) */}
@@ -91,14 +95,15 @@ export default function BeforeAfterSlider({
       </div>
 
       {/* Slider Control */}
-      <div className="absolute bottom-4 left-4 right-4">
+      <div className="absolute bottom-4 left-4 right-4 z-10">
         <Slider
+          min={0}
+          max={100}
+          step={0.1}
           value={[position]}
-          onValueChange={([value]) => setPosition(value)}
+          onValueChange={handleSliderChange}
           onValueCommit={() => setIsDragging(false)}
           onPointerDown={() => setIsDragging(true)}
-          className="cursor-ew-resize"
-          step={0.1}
         />
       </div>
 
