@@ -19,18 +19,18 @@ export default function Footer() {
             <h3 className="text-sm font-semibold mb-4">事業案内</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/projects?category=civil">
-                  <a className="text-muted-foreground hover:text-foreground">土木工事</a>
+                <Link href="/projects?category=civil" className="text-muted-foreground hover:text-foreground">
+                  土木工事
                 </Link>
               </li>
               <li>
-                <Link href="/projects?category=architecture">
-                  <a className="text-muted-foreground hover:text-foreground">建築工事</a>
+                <Link href="/projects?category=architecture" className="text-muted-foreground hover:text-foreground">
+                  建築工事
                 </Link>
               </li>
               <li>
-                <Link href="/projects?category=environment">
-                  <a className="text-muted-foreground hover:text-foreground">環境事業</a>
+                <Link href="/projects?category=environment" className="text-muted-foreground hover:text-foreground">
+                  環境事業
                 </Link>
               </li>
             </ul>
@@ -40,23 +40,23 @@ export default function Footer() {
             <h3 className="text-sm font-semibold mb-4">企業情報</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/company#about">
-                  <a className="text-muted-foreground hover:text-foreground">会社概要</a>
+                <Link href="/company#about" className="text-muted-foreground hover:text-foreground">
+                  会社概要
                 </Link>
               </li>
               <li>
-                <Link href="/company#philosophy">
-                  <a className="text-muted-foreground hover:text-foreground">企業理念</a>
+                <Link href="/company#philosophy" className="text-muted-foreground hover:text-foreground">
+                  企業理念
                 </Link>
               </li>
               <li>
-                <Link href="/company#history">
-                  <a className="text-muted-foreground hover:text-foreground">沿革</a>
+                <Link href="/company#history" className="text-muted-foreground hover:text-foreground">
+                  沿革
                 </Link>
               </li>
               <li>
-                <Link href="/company#access">
-                  <a className="text-muted-foreground hover:text-foreground">アクセス</a>
+                <Link href="/company#access" className="text-muted-foreground hover:text-foreground">
+                  アクセス
                 </Link>
               </li>
             </ul>
@@ -66,18 +66,18 @@ export default function Footer() {
             <h3 className="text-sm font-semibold mb-4">採用・協力会社</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link href="/careers">
-                  <a className="text-muted-foreground hover:text-foreground">採用情報</a>
+                <Link href="/careers" className="text-muted-foreground hover:text-foreground">
+                  採用情報
                 </Link>
               </li>
               <li>
-                <Link href="/partners">
-                  <a className="text-muted-foreground hover:text-foreground">協力会社募集</a>
+                <Link href="/partners" className="text-muted-foreground hover:text-foreground">
+                  協力会社募集
                 </Link>
               </li>
               <li>
-                <Link href="/contact">
-                  <a className="text-muted-foreground hover:text-foreground">お問い合わせ</a>
+                <Link href="/contact" className="text-muted-foreground hover:text-foreground">
+                  お問い合わせ
                 </Link>
               </li>
             </ul>
@@ -87,11 +87,11 @@ export default function Footer() {
         <div className="mt-12 pt-8 border-t">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex gap-4 text-sm text-muted-foreground">
-              <Link href="/privacy">
-                <a className="hover:text-foreground">プライバシーポリシー</a>
+              <Link href="/privacy" className="hover:text-foreground">
+                プライバシーポリシー
               </Link>
-              <Link href="/terms">
-                <a className="hover:text-foreground">利用規約</a>
+              <Link href="/terms" className="hover:text-foreground">
+                利用規約
               </Link>
             </div>
             <p className="text-sm text-muted-foreground">
