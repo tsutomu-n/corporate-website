@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
+import { ArrowRight } from "lucide-react";
 import type { Project } from "@db/schema";
 
 const categories = [
@@ -67,8 +68,8 @@ export default function Projects() {
                   </Card>
                 ))
             : projects?.map((project) => (
-                <Card 
-                  key={project.id} 
+                <Card
+                  key={project.id}
                   className="overflow-hidden group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                 >
                   <div className="relative">
@@ -76,13 +77,13 @@ export default function Projects() {
                       className="aspect-video bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
                       style={{ backgroundImage: `url(${project.imageUrl})` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                     <div className="absolute top-4 left-4">
-                      <Badge 
-                        variant="secondary" 
+                      <Badge
+                        variant="secondary"
                         className="bg-white/90 shadow-md transition-transform duration-300 group-hover:scale-110"
                       >
-                        {categories.find(c => c.id === project.category)?.icon}{" "}
+                        {categories.find((c) => c.id === project.category)?.icon}{" "}
                         {project.category}
                       </Badge>
                     </div>
@@ -100,10 +101,15 @@ export default function Projects() {
                     </p>
                   </CardContent>
                   {/* View Details Overlay */}
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Link href={`/projects/${project.id}`}>
-                      <Button variant="default" className="bg-white text-black hover:bg-white/90">
+                      <Button
+                        variant="default"
+                        size="lg"
+                        className="bg-white text-black hover:bg-white/90 transform transition-all duration-300 group-hover:scale-110 px-8 py-6 text-lg font-medium shadow-lg"
+                      >
                         詳細を見る
+                        <ArrowRight className="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                       </Button>
                     </Link>
                   </div>
