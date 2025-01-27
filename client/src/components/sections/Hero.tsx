@@ -9,29 +9,29 @@ export default function Hero() {
         <div 
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=2070')",
+            backgroundImage: "url('https://images.unsplash.com/photo-1485083269755-a7b559a4fe5e?q=80&w=2069')",
           }}
         />
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* Content */}
       <div className="container relative z-10">
         <div className="max-w-2xl text-white">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            信頼と技術で、<br />
+            確かな技術と実績で、<br />
             未来のインフラを創造する
           </h1>
           <p className="text-lg md:text-xl mb-8 text-gray-200">
-            創業50年の実績と信頼。<br />
-            最新技術と確かな品質で、<br />
-            社会インフラの発展に貢献します。
+            創業50年の信頼と実績。<br />
+            確かな品質と最新技術で、<br />
+            安全で快適な社会インフラの構築に貢献します。
           </p>
           <div className="flex gap-4">
-            <Button size="lg" asChild>
+            <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
               <Link href="/contact">お問い合わせ</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-white" asChild>
+            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
               <Link href="/projects">施工実績を見る</Link>
             </Button>
           </div>

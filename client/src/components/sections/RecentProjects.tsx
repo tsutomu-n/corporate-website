@@ -9,6 +9,9 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { ja } from "date-fns/locale";
 import type { Project } from "@db/schema";
 
 export default function RecentProjects() {
@@ -37,24 +40,43 @@ export default function RecentProjects() {
                 .fill(0)
                 .map((_, i) => (
                   <Card key={i} className="overflow-hidden">
-                    <Skeleton className="h-48 w-full" />
+                    <div className="relative">
+                      <Skeleton className="aspect-[4/3] w-full" />
+                      <div className="absolute top-4 left-4">
+                        <Skeleton className="h-6 w-20" />
+                      </div>
+                    </div>
                     <CardHeader>
                       <Skeleton className="h-6 w-3/4 mb-2" />
                       <Skeleton className="h-4 w-1/2" />
                     </CardHeader>
+                    <CardContent>
+                      <Skeleton className="h-4 w-full mb-2" />
+                      <Skeleton className="h-4 w-2/3" />
+                    </CardContent>
                   </Card>
                 ))
             : projects?.map((project) => (
-                <Card key={project.id} className="overflow-hidden">
-                  <div
-                    className="h-48 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${project.imageUrl})` }}
-                  />
+                <Card key={project.id} className="overflow-hidden group">
+                  <div className="relative">
+                    <div
+                      className="aspect-[4/3] bg-cover bg-center transition-transform duration-300 group-hover:scale-105"
+                      style={{ backgroundImage: `url(${project.imageUrl})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute top-4 left-4">
+                      <Badge variant="secondary" className="bg-white/90">
+                        {project.category}
+                      </Badge>
+                    </div>
+                  </div>
                   <CardHeader>
                     <CardTitle>{project.title}</CardTitle>
                     <CardDescription>
                       {project.location} ・{" "}
-                      {new Date(project.completionDate).getFullYear()}年完工
+                      {format(new Date(project.completionDate), "yyyy年MM月完工", {
+                        locale: ja,
+                      })}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
