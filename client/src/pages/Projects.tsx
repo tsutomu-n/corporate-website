@@ -70,14 +70,14 @@ export default function Projects() {
             : projects?.map((project) => (
                 <Card
                   key={project.id}
-                  className="overflow-hidden group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                  className="overflow-hidden group relative cursor-pointer transition-all duration-600 hover:shadow-2xl hover:-translate-y-2"
                 >
                   <div className="relative">
                     <div
-                      className="aspect-video bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                      className="aspect-video bg-cover bg-center transition-transform duration-600 group-hover:scale-110"
                       style={{ backgroundImage: `url(${project.imageUrl})` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                     <div className="absolute top-4 left-4">
                       <Badge
                         variant="secondary"
@@ -96,20 +96,23 @@ export default function Projects() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-sm text-muted-foreground line-clamp-2">
                       {project.description}
                     </p>
                   </CardContent>
-                  {/* View Details Overlay */}
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  {/* View Details Overlay - 劇的に改善したバージョン */}
+                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-600 flex items-center justify-center">
                     <Link href={`/projects/${project.id}`}>
                       <Button
                         variant="default"
                         size="lg"
-                        className="bg-white text-black hover:bg-white/90 transform transition-all duration-300 group-hover:scale-110 px-8 py-6 text-lg font-medium shadow-lg"
+                        className="relative overflow-hidden bg-primary hover:bg-primary/90 text-white transform transition-all duration-600 group-hover:scale-120 px-12 py-8 text-xl font-medium shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.24)] active:scale-95"
                       >
-                        詳細を見る
-                        <ArrowRight className="h-5 w-5 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
+                        <span className="relative z-10 flex items-center gap-3">
+                          詳細を見る
+                          <ArrowRight className="h-6 w-6 transition-transform duration-600 group-hover:translate-x-3" />
+                        </span>
+                        <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/5 to-primary-foreground/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                       </Button>
                     </Link>
                   </div>
