@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { civilEngineeringCategories } from "@db/schema";
@@ -31,16 +30,7 @@ const categoryColors: Record<string, { bg: string; text: string }> = {
   [civilEngineeringCategories.DISASTER]: { bg: "bg-red-100", text: "text-red-800" },
 };
 
-// 工事規模に基づくサイズ計算
-function getProjectSize(budget: number | null): number {
-  if (!budget) return 60;
-  const size = Math.log10(budget) * 10;
-  return Math.max(60, Math.min(120, size));
-}
-
 export default function ProjectTimeline() {
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
-  
   const { data: projects, isLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects"],
   });
@@ -97,7 +87,7 @@ export default function ProjectTimeline() {
                 <div className="sticky top-20 bg-background/95 backdrop-blur z-10 py-4">
                   <h3 className="text-2xl font-bold">{year}年</h3>
                 </div>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                   {projectsByYear[year].map((project) => (
                     <Link key={project.id} href={`/projects/${project.id}`}>
