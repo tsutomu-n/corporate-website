@@ -74,10 +74,10 @@ export default function Projects() {
                 >
                   <div className="relative">
                     <div
-                      className="aspect-video bg-cover bg-center transition-transform duration-600 group-hover:scale-110"
+                      className="aspect-video bg-cover bg-center transition-transform duration-600 group-hover:scale-120 group-hover:blur-[2px]"
                       style={{ backgroundImage: `url(${project.imageUrl})` }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
                     <div className="absolute top-4 left-4">
                       <Badge
                         variant="secondary"
@@ -89,7 +89,10 @@ export default function Projects() {
                     </div>
                   </div>
                   <CardHeader>
-                    <CardTitle>{project.title}</CardTitle>
+                    <CardTitle className="group-hover:text-primary transition-colors flex items-center gap-2">
+                      {project.title}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </CardTitle>
                     <div className="text-sm text-muted-foreground">
                       <p>{project.location}</p>
                       <p>{new Date(project.completionDate).getFullYear()}年完工</p>
@@ -100,13 +103,13 @@ export default function Projects() {
                       {project.description}
                     </p>
                   </CardContent>
-                  {/* View Details Overlay - 劇的に改善したバージョン */}
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-600 flex items-center justify-center">
+                  {/* View Details Overlay - 改善版 */}
+                  <div className="absolute inset-0 bg-gradient-radial from-black/80 via-black/70 to-black/90 opacity-0 group-hover:opacity-100 transition-all duration-600 flex items-center justify-center">
                     <Link href={`/projects/${project.id}`}>
                       <Button
                         variant="default"
                         size="lg"
-                        className="relative overflow-hidden bg-primary hover:bg-primary/90 text-white transform transition-all duration-600 group-hover:scale-120 px-12 py-8 text-xl font-medium shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.24)] active:scale-95"
+                        className="relative overflow-hidden bg-primary hover:bg-primary/90 text-white transform transition-all duration-600 group-hover:scale-120 px-12 py-8 text-xl font-medium shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.24)] active:scale-95 border-2 border-white/20"
                       >
                         <span className="relative z-10 flex items-center gap-3">
                           詳細を見る
