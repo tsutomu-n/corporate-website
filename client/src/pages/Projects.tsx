@@ -3,13 +3,14 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 import type { Project } from "@db/schema";
 
 const categories = [
-  { id: "all", label: "すべて" },
-  { id: "civil", label: "土木工事" },
-  { id: "architecture", label: "建築工事" },
-  { id: "environment", label: "環境事業" },
+  { id: "all", label: "すべて", icon: "🏗️" },
+  { id: "civil", label: "土木工事", icon: "🛣️" },
+  { id: "architecture", label: "建築工事", icon: "🏢" },
+  { id: "environment", label: "環境事業", icon: "🌱" },
 ];
 
 export default function Projects() {
@@ -30,13 +31,22 @@ export default function Projects() {
           </p>
         </div>
 
-        <div className="flex justify-center gap-2 mb-8">
+        {/* カテゴリフィルター */}
+        <div className="flex justify-center gap-4 mb-12">
           {categories.map((category) => (
             <Button
               key={category.id}
               variant={selectedCategory === category.id ? "default" : "outline"}
               onClick={() => setSelectedCategory(category.id)}
+              className={`
+                px-6 py-3 text-lg transition-all duration-300
+                ${selectedCategory === category.id
+                  ? "scale-105 shadow-lg"
+                  : "hover:scale-105"
+                }
+              `}
             >
+              <span className="mr-2">{category.icon}</span>
               {category.label}
             </Button>
           ))}
@@ -56,11 +66,26 @@ export default function Projects() {
                   </Card>
                 ))
             : projects?.map((project) => (
-                <Card key={project.id} className="overflow-hidden">
-                  <div
-                    className="h-48 bg-cover bg-center"
-                    style={{ backgroundImage: `url(${project.imageUrl})` }}
-                  />
+                <Card 
+                  key={project.id} 
+                  className="overflow-hidden group relative cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                >
+                  <div className="relative">
+                    <div
+                      className="aspect-video bg-cover bg-center transition-transform duration-500 group-hover:scale-110"
+                      style={{ backgroundImage: `url(${project.imageUrl})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                    <div className="absolute top-4 left-4">
+                      <Badge 
+                        variant="secondary" 
+                        className="bg-white/90 shadow-md transition-transform duration-300 group-hover:scale-110"
+                      >
+                        {categories.find(c => c.id === project.category)?.icon}{" "}
+                        {project.category}
+                      </Badge>
+                    </div>
+                  </div>
                   <CardHeader>
                     <CardTitle>{project.title}</CardTitle>
                     <div className="text-sm text-muted-foreground">
@@ -73,6 +98,12 @@ export default function Projects() {
                       {project.description}
                     </p>
                   </CardContent>
+                  {/* View Details Overlay */}
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <Button variant="default" className="bg-white text-black hover:bg-white/90">
+                      詳細を見る
+                    </Button>
+                  </div>
                 </Card>
               ))}
         </div>
