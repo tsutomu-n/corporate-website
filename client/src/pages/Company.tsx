@@ -1,5 +1,6 @@
-import { Building, MapPin, History, Clock } from "lucide-react";
+import { Building } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import CompanyHistory from "@/components/sections/CompanyHistory";
 
 const companyInfo = {
   overview: [
@@ -9,14 +10,6 @@ const companyInfo = {
     { label: "代表者", value: "山田 太郎" },
     { label: "従業員数", value: "250名（2024年1月現在）" },
     { label: "事業内容", value: "土木工事、建築工事、環境事業" },
-  ],
-  history: [
-    { year: "1974年", event: "山田建設株式会社設立" },
-    { year: "1980年", event: "東京支店開設" },
-    { year: "1995年", event: "ISO9001認証取得" },
-    { year: "2000年", event: "環境事業部設立" },
-    { year: "2010年", event: "本社ビル移転" },
-    { year: "2020年", event: "創業50周年" },
   ],
 };
 
@@ -67,26 +60,8 @@ export default function Company() {
             </Card>
           </section>
 
-          {/* 沿革 */}
-          <section id="history">
-            <h2 className="text-3xl font-bold mb-6 text-center">沿革</h2>
-            <div className="max-w-3xl mx-auto">
-              {companyInfo.history.map(({ year, event }, index) => (
-                <div
-                  key={index}
-                  className="flex gap-4 pb-8 relative before:absolute before:left-[17px] before:top-8 before:h-full before:w-[2px] before:bg-border last:before:hidden"
-                >
-                  <div className="h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <Clock className="h-5 w-5 text-primary" />
-                  </div>
-                  <div>
-                    <div className="font-medium">{year}</div>
-                    <div className="text-muted-foreground">{event}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
+          {/* 沿革 - 新しいコンポーネントを使用 */}
+          <CompanyHistory />
 
           {/* アクセス */}
           <section id="access">
