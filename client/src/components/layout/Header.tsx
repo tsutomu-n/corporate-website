@@ -34,16 +34,15 @@ export default function Header() {
           <ul className="flex gap-6">
             {navItems.map((item) => (
               <li key={item.href}>
-                <Link href={item.href}>
-                  <a
-                    className={`text-sm transition-colors hover:text-foreground/80 ${
-                      location === item.href
-                        ? "text-foreground font-medium"
-                        : "text-foreground/60"
-                    }`}
-                  >
-                    {item.label}
-                  </a>
+                <Link 
+                  href={item.href} 
+                  className={`text-sm transition-colors hover:text-foreground/80 ${
+                    location === item.href
+                      ? "text-foreground font-medium"
+                      : "text-foreground/60"
+                  }`}
+                >
+                  {item.label}
                 </Link>
               </li>
             ))}
@@ -67,17 +66,16 @@ export default function Header() {
               <ul className="flex flex-col gap-4">
                 {navItems.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href}>
-                      <a
-                        className={`block py-2 text-lg ${
-                          location === item.href
-                            ? "text-foreground font-medium"
-                            : "text-foreground/60"
-                        }`}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.label}
-                      </a>
+                    <Link 
+                      href={item.href} 
+                      className={`block py-2 text-lg ${
+                        location === item.href
+                          ? "text-foreground font-medium"
+                          : "text-foreground/60"
+                      }`}
+                      
+                    >
+                      {item.label}
                     </Link>
                   </li>
                 ))}
