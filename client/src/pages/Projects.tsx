@@ -24,6 +24,19 @@ const categories = [
   { id: civilEngineeringCategories.DISASTER, label: "災害復旧工事", icon: "🚨" },
 ];
 
+const categoryConfig = {
+  [civilEngineeringCategories.SLOPE]: { icon: "⛰️", bg: "from-teal-500" },
+  [civilEngineeringCategories.BRIDGE]: { icon: "🌉", bg: "from-blue-500" },
+  [civilEngineeringCategories.REPAIR]: { icon: "🔧", bg: "from-yellow-500" },
+  [civilEngineeringCategories.ROAD]: { icon: "🛣️", bg: "from-orange-500" },
+  [civilEngineeringCategories.RIVER]: { icon: "🌊", bg: "from-cyan-500" },
+  [civilEngineeringCategories.TUNNEL]: { icon: "🚇", bg: "from-purple-500" },
+  [civilEngineeringCategories.GROUND]: { icon: "🏗️", bg: "from-pink-500" },
+  [civilEngineeringCategories.DREDGING]: { icon: "⚓", bg: "from-indigo-500" },
+  [civilEngineeringCategories.LANDSCAPE]: { icon: "🌳", bg: "from-green-500" },
+  [civilEngineeringCategories.DISASTER]: { icon: "🚨", bg: "from-red-500" },
+};
+
 export default function Projects() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [viewMode, setViewMode] = useState<"grid" | "timeline">("timeline");
@@ -109,13 +122,19 @@ export default function Projects() {
                     style={{ backgroundImage: `url(${project.imageUrl})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
-                  <div className="absolute top-4 left-4">
-                    <Badge
-                      variant="secondary"
-                      className="bg-white/90 shadow-md transition-transform duration-300 group-hover:scale-110"
-                    >
+                  {/* サイドリボン */}
+                  <div className={`
+                    absolute left-0 top-0 h-full w-16
+                    bg-gradient-to-r ${categoryConfig[project.subCategory ?? ""]?.bg ?? "from-gray-600"}
+                    flex flex-col items-center justify-start
+                    p-4 text-white
+                  `}>
+                    <span className="text-2xl mb-2">
+                      {categoryConfig[project.subCategory ?? ""]?.icon}
+                    </span>
+                    <div className="writing-vertical-rl text-lg font-bold tracking-wider">
                       {project.subCategory}
-                    </Badge>
+                    </div>
                   </div>
                 </div>
                 <CardHeader>

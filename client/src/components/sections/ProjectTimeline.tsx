@@ -16,18 +16,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { civilEngineeringCategories } from "@db/schema";
 import type { Project } from "@db/schema";
 
-// カテゴリーごとの色定義
-const categoryColors: Record<string, { bg: string; text: string }> = {
-  [civilEngineeringCategories.SLOPE]: { bg: "bg-orange-100", text: "text-orange-800" },
-  [civilEngineeringCategories.BRIDGE]: { bg: "bg-blue-100", text: "text-blue-800" },
-  [civilEngineeringCategories.REPAIR]: { bg: "bg-purple-100", text: "text-purple-800" },
-  [civilEngineeringCategories.ROAD]: { bg: "bg-green-100", text: "text-green-800" },
-  [civilEngineeringCategories.RIVER]: { bg: "bg-cyan-100", text: "text-cyan-800" },
-  [civilEngineeringCategories.TUNNEL]: { bg: "bg-gray-100", text: "text-gray-800" },
-  [civilEngineeringCategories.GROUND]: { bg: "bg-yellow-100", text: "text-yellow-800" },
-  [civilEngineeringCategories.DREDGING]: { bg: "bg-indigo-100", text: "text-indigo-800" },
-  [civilEngineeringCategories.LANDSCAPE]: { bg: "bg-emerald-100", text: "text-emerald-800" },
-  [civilEngineeringCategories.DISASTER]: { bg: "bg-red-100", text: "text-red-800" },
+// カテゴリーごとの色とアイコン定義
+const categoryConfig: Record<string, { bg: string; text: string; icon: string }> = {
+  [civilEngineeringCategories.SLOPE]: { bg: "from-orange-600", text: "text-orange-50", icon: "⛰️" },
+  [civilEngineeringCategories.BRIDGE]: { bg: "from-blue-600", text: "text-blue-50", icon: "🌉" },
+  [civilEngineeringCategories.REPAIR]: { bg: "from-purple-600", text: "text-purple-50", icon: "🔧" },
+  [civilEngineeringCategories.ROAD]: { bg: "from-green-600", text: "text-green-50", icon: "🛣️" },
+  [civilEngineeringCategories.RIVER]: { bg: "from-cyan-600", text: "text-cyan-50", icon: "🌊" },
+  [civilEngineeringCategories.TUNNEL]: { bg: "from-gray-600", text: "text-gray-50", icon: "🚇" },
+  [civilEngineeringCategories.GROUND]: { bg: "from-yellow-600", text: "text-yellow-50", icon: "🏗️" },
+  [civilEngineeringCategories.DREDGING]: { bg: "from-indigo-600", text: "text-indigo-50", icon: "⚓" },
+  [civilEngineeringCategories.LANDSCAPE]: { bg: "from-emerald-600", text: "text-emerald-50", icon: "🌳" },
+  [civilEngineeringCategories.DISASTER]: { bg: "from-red-600", text: "text-red-50", icon: "🚨" },
 };
 
 export default function ProjectTimeline() {
@@ -97,20 +97,24 @@ export default function ProjectTimeline() {
                       >
                         <Card className="overflow-hidden h-full">
                           <div className="relative">
+                            {/* メイン画像 */}
                             <div
                               className="aspect-video bg-cover bg-center"
                               style={{ backgroundImage: `url(${project.imageUrl})` }}
                             />
-                            <div className="absolute top-4 left-4">
-                              <Badge
-                                className={`${
-                                  categoryColors[project.subCategory ?? ""]?.bg ?? "bg-gray-100"
-                                } ${
-                                  categoryColors[project.subCategory ?? ""]?.text ?? "text-gray-800"
-                                }`}
-                              >
+                            {/* サイドリボン */}
+                            <div className={`
+                              absolute left-0 top-0 h-full w-16
+                              bg-gradient-to-r ${categoryConfig[project.subCategory ?? ""]?.bg ?? "from-gray-600"}
+                              flex flex-col items-center justify-start
+                              p-4 text-white
+                            `}>
+                              <span className="text-2xl mb-2">
+                                {categoryConfig[project.subCategory ?? ""]?.icon}
+                              </span>
+                              <div className="writing-vertical-rl text-lg font-bold tracking-wider">
                                 {project.subCategory}
-                              </Badge>
+                              </div>
                             </div>
                           </div>
                           <CardHeader>
