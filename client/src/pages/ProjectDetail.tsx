@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "wouter";
+import { useParams } from "wouter";
 import {
   Card,
   CardContent,
@@ -15,8 +15,8 @@ import { ja } from "date-fns/locale";
 import type { Project } from "@db/schema";
 
 export default function ProjectDetail() {
-  const [, params] = useLocation();
-  const projectId = params.split("/")[2];
+  const params = useParams();
+  const projectId = params.id;
 
   const { data: project, isLoading } = useQuery<Project>({
     queryKey: [`/api/projects/${projectId}`],
