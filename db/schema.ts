@@ -1,17 +1,30 @@
-import { pgTable, text, serial, timestamp, varchar, integer, decimal } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, timestamp, varchar, integer, decimal, json } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
+
+export const civilEngineeringCategories = {
+  SLOPE: "法面工事",
+  BRIDGE: "橋梁工事",
+  REPAIR: "補修工事",
+  ROAD: "道路工事",
+  RIVER: "河川工事",
+  TUNNEL: "トンネル工事",
+  GROUND: "地盤改良工事",
+  DREDGING: "しゅんせつ工事",
+  LANDSCAPE: "造園工事",
+  DISASTER: "災害復旧工事",
+} as const;
 
 export const projects = pgTable("projects", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   category: text("category").notNull(),
+  subCategory: text("sub_category"),  // 土木工事の詳細カテゴリー
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
   beforeImageUrl: text("before_image_url"),
   afterImageUrl: text("after_image_url"),
   completionDate: timestamp("completion_date").notNull(),
   location: text("location").notNull(),
-  // 新しいフィールド
   startDate: timestamp("start_date"),
   budget: decimal("budget", { precision: 12, scale: 2 }),
   area: decimal("area", { precision: 10, scale: 2 }),
@@ -22,8 +35,13 @@ export const projects = pgTable("projects", {
   mediaLinks: text("media_links"),
   technicalHighlights: text("technical_highlights"),
   challengesSolutions: text("challenges_solutions"),
+  // 新しいフィールド
+  constructionScale: text("construction_scale"), // 工事規模
+  technicalFeatures: json("technical_features"), // 技術的特徴（JSON形式）
+  impactMetrics: json("impact_metrics"), // 社会的影響指標（JSON形式）
 });
 
+// 他のテーブル定義は変更なし
 export const news = pgTable("news", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
