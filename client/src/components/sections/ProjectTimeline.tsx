@@ -17,17 +17,17 @@ import { civilEngineeringCategories } from "@db/schema";
 import type { Project } from "@db/schema";
 
 // カテゴリーごとの色とアイコン定義
-const categoryConfig: Record<string, { bg: string; text: string; icon: string }> = {
-  [civilEngineeringCategories.SLOPE]: { bg: "from-orange-600", text: "text-orange-50", icon: "⛰️" },
-  [civilEngineeringCategories.BRIDGE]: { bg: "from-blue-600", text: "text-blue-50", icon: "🌉" },
-  [civilEngineeringCategories.REPAIR]: { bg: "from-purple-600", text: "text-purple-50", icon: "🔧" },
-  [civilEngineeringCategories.ROAD]: { bg: "from-green-600", text: "text-green-50", icon: "🛣️" },
-  [civilEngineeringCategories.RIVER]: { bg: "from-cyan-600", text: "text-cyan-50", icon: "🌊" },
-  [civilEngineeringCategories.TUNNEL]: { bg: "from-gray-600", text: "text-gray-50", icon: "🚇" },
-  [civilEngineeringCategories.GROUND]: { bg: "from-yellow-600", text: "text-yellow-50", icon: "🏗️" },
-  [civilEngineeringCategories.DREDGING]: { bg: "from-indigo-600", text: "text-indigo-50", icon: "⚓" },
-  [civilEngineeringCategories.LANDSCAPE]: { bg: "from-emerald-600", text: "text-emerald-50", icon: "🌳" },
-  [civilEngineeringCategories.DISASTER]: { bg: "from-red-600", text: "text-red-50", icon: "🚨" },
+const categoryConfig: Record<string, { bgFrom: string; bgTo: string; text: string; icon: string }> = {
+  [civilEngineeringCategories.SLOPE]: { bgFrom: "from-orange-600", bgTo: "to-orange-500", text: "text-orange-50", icon: "⛰️" },
+  [civilEngineeringCategories.BRIDGE]: { bgFrom: "from-blue-600", bgTo: "to-blue-500", text: "text-blue-50", icon: "🌉" },
+  [civilEngineeringCategories.REPAIR]: { bgFrom: "from-purple-600", bgTo: "to-purple-500", text: "text-purple-50", icon: "🔧" },
+  [civilEngineeringCategories.ROAD]: { bgFrom: "from-green-600", bgTo: "to-green-500", text: "text-green-50", icon: "🛣️" },
+  [civilEngineeringCategories.RIVER]: { bgFrom: "from-cyan-600", bgTo: "to-cyan-500", text: "text-cyan-50", icon: "🌊" },
+  [civilEngineeringCategories.TUNNEL]: { bgFrom: "from-gray-600", bgTo: "to-gray-500", text: "text-gray-50", icon: "🚇" },
+  [civilEngineeringCategories.GROUND]: { bgFrom: "from-yellow-600", bgTo: "to-yellow-500", text: "text-yellow-50", icon: "🏗️" },
+  [civilEngineeringCategories.DREDGING]: { bgFrom: "from-indigo-600", bgTo: "to-indigo-500", text: "text-indigo-50", icon: "⚓" },
+  [civilEngineeringCategories.LANDSCAPE]: { bgFrom: "from-emerald-600", bgTo: "to-emerald-500", text: "text-emerald-50", icon: "🌳" },
+  [civilEngineeringCategories.DISASTER]: { bgFrom: "from-red-600", bgTo: "to-red-500", text: "text-red-50", icon: "🚨" },
 };
 
 export default function ProjectTimeline() {
@@ -104,15 +104,18 @@ export default function ProjectTimeline() {
                             />
                             {/* サイドリボン */}
                             <div className={`
-                              absolute left-0 top-0 h-full w-16
-                              bg-gradient-to-r ${categoryConfig[project.subCategory ?? ""]?.bg ?? "from-gray-600"}
+                              absolute left-0 top-0 h-full w-24
+                              bg-gradient-to-br 
+                              ${categoryConfig[project.subCategory ?? ""]?.bgFrom ?? "from-gray-600"} 
+                              ${categoryConfig[project.subCategory ?? ""]?.bgTo ?? "to-gray-500"}
                               flex flex-col items-center justify-start
-                              p-4 text-white
+                              p-4 text-white shadow-lg
+                              transition-all duration-300 group-hover:w-32
                             `}>
-                              <span className="text-2xl mb-2">
+                              <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
                                 {categoryConfig[project.subCategory ?? ""]?.icon}
                               </span>
-                              <div className="writing-vertical-rl text-lg font-bold tracking-wider">
+                              <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
                                 {project.subCategory}
                               </div>
                             </div>

@@ -25,16 +25,16 @@ const categories = [
 ];
 
 const categoryConfig = {
-  [civilEngineeringCategories.SLOPE]: { icon: "⛰️", bg: "from-teal-500" },
-  [civilEngineeringCategories.BRIDGE]: { icon: "🌉", bg: "from-blue-500" },
-  [civilEngineeringCategories.REPAIR]: { icon: "🔧", bg: "from-yellow-500" },
-  [civilEngineeringCategories.ROAD]: { icon: "🛣️", bg: "from-orange-500" },
-  [civilEngineeringCategories.RIVER]: { icon: "🌊", bg: "from-cyan-500" },
-  [civilEngineeringCategories.TUNNEL]: { icon: "🚇", bg: "from-purple-500" },
-  [civilEngineeringCategories.GROUND]: { icon: "🏗️", bg: "from-pink-500" },
-  [civilEngineeringCategories.DREDGING]: { icon: "⚓", bg: "from-indigo-500" },
-  [civilEngineeringCategories.LANDSCAPE]: { icon: "🌳", bg: "from-green-500" },
-  [civilEngineeringCategories.DISASTER]: { icon: "🚨", bg: "from-red-500" },
+  [civilEngineeringCategories.SLOPE]: { icon: "⛰️", bgFrom: "from-orange-600", bgTo: "to-orange-500" },
+  [civilEngineeringCategories.BRIDGE]: { icon: "🌉", bgFrom: "from-blue-600", bgTo: "to-blue-500" },
+  [civilEngineeringCategories.REPAIR]: { icon: "🔧", bgFrom: "from-purple-600", bgTo: "to-purple-500" },
+  [civilEngineeringCategories.ROAD]: { icon: "🛣️", bgFrom: "from-green-600", bgTo: "to-green-500" },
+  [civilEngineeringCategories.RIVER]: { icon: "🌊", bgFrom: "from-cyan-600", bgTo: "to-cyan-500" },
+  [civilEngineeringCategories.TUNNEL]: { icon: "🚇", bgFrom: "from-gray-600", bgTo: "to-gray-500" },
+  [civilEngineeringCategories.GROUND]: { icon: "🏗️", bgFrom: "from-yellow-600", bgTo: "to-yellow-500" },
+  [civilEngineeringCategories.DREDGING]: { icon: "⚓", bgFrom: "from-indigo-600", bgTo: "to-indigo-500" },
+  [civilEngineeringCategories.LANDSCAPE]: { icon: "🌳", bgFrom: "from-emerald-600", bgTo: "to-emerald-500" },
+  [civilEngineeringCategories.DISASTER]: { icon: "🚨", bgFrom: "from-red-600", bgTo: "to-red-500" },
 };
 
 export default function Projects() {
@@ -124,15 +124,18 @@ export default function Projects() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
                   {/* サイドリボン */}
                   <div className={`
-                    absolute left-0 top-0 h-full w-16
-                    bg-gradient-to-r ${categoryConfig[project.subCategory ?? ""]?.bg ?? "from-gray-600"}
+                    absolute left-0 top-0 h-full w-24
+                    bg-gradient-to-br 
+                    ${categoryConfig[project.subCategory ?? ""]?.bgFrom ?? "from-gray-600"} 
+                    ${categoryConfig[project.subCategory ?? ""]?.bgTo ?? "to-gray-500"}
                     flex flex-col items-center justify-start
-                    p-4 text-white
+                    p-4 text-white shadow-lg
+                    transition-all duration-300 group-hover:w-32
                   `}>
-                    <span className="text-2xl mb-2">
+                    <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
                       {categoryConfig[project.subCategory ?? ""]?.icon}
                     </span>
-                    <div className="writing-vertical-rl text-lg font-bold tracking-wider">
+                    <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
                       {project.subCategory}
                     </div>
                   </div>
