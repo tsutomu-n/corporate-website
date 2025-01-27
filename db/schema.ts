@@ -7,6 +7,8 @@ export const projects = pgTable("projects", {
   category: text("category").notNull(),
   description: text("description").notNull(),
   imageUrl: text("image_url").notNull(),
+  beforeImageUrl: text("before_image_url"),
+  afterImageUrl: text("after_image_url"),
   completionDate: timestamp("completion_date").notNull(),
   location: text("location").notNull(),
 });

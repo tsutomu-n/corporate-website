@@ -7,6 +7,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Home from "@/pages/Home";
 import Projects from "@/pages/Projects";
+import ProjectDetail from "@/pages/ProjectDetail";
 import Company from "@/pages/Company";
 import Partners from "@/pages/Partners";
 import Careers from "@/pages/Careers";
@@ -20,6 +21,7 @@ function Router() {
         <Switch>
           <Route path="/" component={Home} />
           <Route path="/projects" component={Projects} />
+          <Route path="/projects/:id" component={ProjectDetail} />
           <Route path="/company" component={Company} />
           <Route path="/partners" component={Partners} />
           <Route path="/careers" component={Careers} />

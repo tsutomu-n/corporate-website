@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
 import { projects, news, contactSubmissions } from "@db/schema";
-import { eq, desc, and, or } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 
 export function registerRoutes(app: Express): Server {
   // Get recent projects (for homepage)
@@ -22,17 +22,33 @@ export function registerRoutes(app: Express): Server {
   app.get("/api/projects", async (req, res) => {
     try {
       const { category } = req.query;
-      
       const projectsList = await db.query.projects.findMany({
-        where: category && category !== "all" 
+        where: category && category !== "all"
           ? eq(projects.category, category as string)
           : undefined,
         orderBy: desc(projects.completionDate),
       });
-      
       res.json(projectsList);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch projects" });
+    }
+  });
+
+  // Get single project by ID
+  app.get("/api/projects/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const project = await db.query.projects.findFirst({
+        where: eq(projects.id, parseInt(id)),
+      });
+
+      if (!project) {
+        return res.status(404).json({ message: "Project not found" });
+      }
+
+      res.json(project);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch project" });
     }
   });
 
