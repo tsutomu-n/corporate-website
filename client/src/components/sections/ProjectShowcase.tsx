@@ -16,17 +16,17 @@ export default function ProjectShowcase() {
       <div className="absolute inset-0 bg-gradient-to-b from-gray-50/80 to-gray-100/40" />
       <div className="container relative">
         <FadeIn>
-          <div className="max-w-2xl mx-auto text-center mb-16">
+          <div className="max-w-3xl mx-auto text-center mb-16">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
               大規模プロジェクトの実績
             </h2>
-            <p className="text-muted-foreground text-lg">
+            <p className="text-lg text-muted-foreground">
               確かな技術力と品質管理で完遂した代表的なプロジェクトをご紹介します
             </p>
           </div>
         </FadeIn>
 
-        <FadeInStagger className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <FadeInStagger className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
           {projects?.slice(0, 2).map((project, index) => (
             <FadeIn key={project.id}>
               <Link href={`/projects/${project.id}`}>
