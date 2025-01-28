@@ -18,11 +18,11 @@ export default function Hero() {
       {/* Content */}
       <div className="container relative z-10">
         <div className="max-w-2xl text-white">
-          <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight text-balance text-compact">
+          <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight text-balance text-compact tracking-tight">
             確かな技術と実績で、<br />
             未来のインフラを創造する
           </h1>
-          <p className="text-xl md:text-2xl mb-12 text-gray-200 leading-relaxed">
+          <p className="text-xl md:text-2xl mb-12 text-white/90 leading-relaxed">
             創業50年の信頼と実績。<br />
             確かな品質と最新技術で、<br />
             安全で快適な社会インフラの構築に貢献します。
@@ -30,7 +30,7 @@ export default function Hero() {
           <div className="flex flex-col sm:flex-row gap-4">
             <Button 
               size="lg" 
-              className="shadow-lg text-lg font-medium" 
+              className="shadow-lg text-lg font-medium h-14" 
               asChild
             >
               <Link href="/contact">お問い合わせ</Link>
@@ -38,7 +38,7 @@ export default function Hero() {
             <Button 
               size="lg" 
               variant="outline-white"
-              className="text-lg font-medium"
+              className="text-lg font-medium h-14"
               asChild
             >
               <Link href="/projects">施工実績を見る</Link>
