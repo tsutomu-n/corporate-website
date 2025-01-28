@@ -1,30 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { ProjectFilters } from "@/components/filters/ProjectFilters";
+import type { Project, CategoryConfig } from "@/types/project";
+import { FadeIn, FadeInStagger } from "@/components/ui/fade-in";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
-import { civilEngineeringCategories } from "@db/schema";
-import type { Project } from "@db/schema";
-import ProjectTimeline from "@/components/sections/ProjectTimeline";
+import { civilEngineeringCategories } from "@/types/project";
 
-const categories = [
-  { id: "all", label: "すべて", icon: "🏗️" },
-  { id: civilEngineeringCategories.SLOPE, label: "法面工事", icon: "⛰️" },
-  { id: civilEngineeringCategories.BRIDGE, label: "橋梁工事", icon: "🌉" },
-  { id: civilEngineeringCategories.REPAIR, label: "補修工事", icon: "🔧" },
-  { id: civilEngineeringCategories.ROAD, label: "道路工事", icon: "🛣️" },
-  { id: civilEngineeringCategories.RIVER, label: "河川工事", icon: "🌊" },
-  { id: civilEngineeringCategories.TUNNEL, label: "トンネル工事", icon: "🚇" },
-  { id: civilEngineeringCategories.GROUND, label: "地盤改良工事", icon: "🏗️" },
-  { id: civilEngineeringCategories.DREDGING, label: "しゅんせつ工事", icon: "⚓" },
-  { id: civilEngineeringCategories.LANDSCAPE, label: "造園工事", icon: "🌳" },
-  { id: civilEngineeringCategories.DISASTER, label: "災害復旧工事", icon: "🚨" },
-];
-
-const categoryConfig = {
+const categoryConfig: CategoryConfig = {
   [civilEngineeringCategories.SLOPE]: { icon: "⛰️", bgFrom: "from-orange-600", bgTo: "to-orange-500" },
   [civilEngineeringCategories.BRIDGE]: { icon: "🌉", bgFrom: "from-blue-600", bgTo: "to-blue-500" },
   [civilEngineeringCategories.REPAIR]: { icon: "🔧", bgFrom: "from-purple-600", bgTo: "to-purple-500" },
@@ -35,15 +22,30 @@ const categoryConfig = {
   [civilEngineeringCategories.DREDGING]: { icon: "⚓", bgFrom: "from-indigo-600", bgTo: "to-indigo-500" },
   [civilEngineeringCategories.LANDSCAPE]: { icon: "🌳", bgFrom: "from-emerald-600", bgTo: "to-emerald-500" },
   [civilEngineeringCategories.DISASTER]: { icon: "🚨", bgFrom: "from-red-600", bgTo: "to-red-500" },
+  [civilEngineeringCategories.EROSION]: { icon: "🗻", bgFrom: "from-amber-600", bgTo: "to-amber-500" },
+  [civilEngineeringCategories.AGRICULTURE]: { icon: "🌾", bgFrom: "from-lime-600", bgTo: "to-lime-500" },
 };
 
 export default function Projects() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [viewMode, setViewMode] = useState<"grid" | "timeline">("timeline");
+  const [filters, setFilters] = useState({
+    search: "",
+    category: "",
+    region: "",
+    year: null as number | null,
+  });
 
   const { data: projects, isLoading } = useQuery<Project[]>({
-    queryKey: ["/api/projects", selectedCategory],
+    queryKey: ["/api/projects", filters],
   });
+
+  const resetFilters = () => {
+    setFilters({
+      search: "",
+      category: "",
+      region: "",
+      year: null,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -68,52 +70,16 @@ export default function Projects() {
           </p>
         </div>
 
-        {/* 表示切り替えボタン */}
-        <div className="flex justify-center gap-4 mb-8">
-          <Button
-            variant={viewMode === "timeline" ? "default" : "outline"}
-            onClick={() => setViewMode("timeline")}
-            className="gap-2"
-          >
-            <span>📅</span> タイムライン表示
-          </Button>
-          <Button
-            variant={viewMode === "grid" ? "default" : "outline"}
-            onClick={() => setViewMode("grid")}
-            className="gap-2"
-          >
-            <span>📱</span> グリッド表示
-          </Button>
-        </div>
+        <ProjectFilters
+          filters={filters}
+          onChange={setFilters}
+          onReset={resetFilters}
+        />
 
-        {/* カテゴリフィルター */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category) => (
-            <Button
-              key={category.id}
-              variant={selectedCategory === category.id ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`
-                px-6 py-3 transition-all duration-300
-                ${selectedCategory === category.id
-                  ? "scale-105 shadow-lg"
-                  : "hover:scale-105"
-                }
-              `}
-            >
-              <span className="mr-2">{category.icon}</span>
-              {category.label}
-            </Button>
-          ))}
-        </div>
-
-        {viewMode === "timeline" ? (
-          <ProjectTimeline />
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects?.map((project) => (
+        <FadeInStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projects?.map((project) => (
+            <FadeIn key={project.id}>
               <Card
-                key={project.id}
                 className="overflow-hidden group relative cursor-pointer transition-all duration-600 hover:shadow-2xl hover:-translate-y-2"
               >
                 <div className="relative">
@@ -122,27 +88,24 @@ export default function Projects() {
                     style={{ backgroundImage: `url(${project.imageUrl})` }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
-                  {/* カテゴリー表示 */}
-                  {project.subCategory ? (
-                    // サイドリボン（カテゴリーがある場合）
+                  {project.subCategory && categoryConfig[project.subCategory] ? (
                     <div className={`
                       absolute left-0 top-0 h-full w-24
                       bg-gradient-to-br 
-                      ${categoryConfig[project.subCategory]?.bgFrom ?? "from-gray-600"} 
-                      ${categoryConfig[project.subCategory]?.bgTo ?? "to-gray-500"}
+                      ${categoryConfig[project.subCategory].bgFrom} 
+                      ${categoryConfig[project.subCategory].bgTo}
                       flex flex-col items-center justify-start
                       p-4 text-white shadow-lg
                       transition-all duration-300 group-hover:w-32
                     `}>
                       <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
-                        {categoryConfig[project.subCategory]?.icon}
+                        {categoryConfig[project.subCategory].icon}
                       </span>
                       <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
                         {project.subCategory}
                       </div>
                     </div>
                   ) : (
-                    // シンプルなバッジ（カテゴリーがない場合）
                     <div className="absolute top-4 left-4">
                       <Badge variant="secondary" className="bg-white/90">
                         {project.category}
@@ -181,7 +144,15 @@ export default function Projects() {
                   </Link>
                 </div>
               </Card>
-            ))}
+            </FadeIn>
+          ))}
+        </FadeInStagger>
+
+        {projects?.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-lg text-muted-foreground">
+              該当するプロジェクトが見つかりませんでした。
+            </p>
           </div>
         )}
       </div>
