@@ -35,8 +35,6 @@ import type { Project } from "@db/schema";
 import RelatedProjects from "@/components/sections/RelatedProjects";
 
 // 以下のコードは変更なし
-
-// 施工プロセスの状態定義
 type ProcessStatus = "completed" | "inProgress" | "upcoming";
 
 interface ConstructionProcess {
@@ -48,7 +46,6 @@ interface ConstructionProcess {
   icon: keyof typeof processIcons;
 }
 
-// プロセスのアイコン定義
 const processIcons = {
   planning: HardHat,
   preparation: Wrench,
@@ -57,7 +54,6 @@ const processIcons = {
   completion: CheckSquare,
 } as const;
 
-// プロセスの状態に応じた色とアイコン
 const statusConfig: Record<ProcessStatus, { color: string; Icon: any }> = {
   completed: { color: "text-green-500", Icon: CheckCircle2 },
   inProgress: { color: "text-blue-500", Icon: CircleDot },
@@ -157,8 +153,8 @@ export default function ProjectDetail() {
 
   if (isLoading) {
     return (
-      <div className="py-16">
-        <div className="container max-w-4xl">
+      <div className="py-16 mobile-section">
+        <div className="container max-w-4xl mobile-container">
           <Skeleton className="h-8 w-2/3 mb-4" />
           <Skeleton className="h-6 w-1/2 mb-8" />
           <Skeleton className="h-[400px] w-full rounded-lg mb-8" />
@@ -169,18 +165,27 @@ export default function ProjectDetail() {
   }
 
   if (!project) {
-    return <div>プロジェクトが見つかりませんでした。</div>;
+    return (
+      <div className="py-16 mobile-section">
+        <div className="container max-w-4xl mobile-container text-center">
+          <h1 className="text-2xl font-bold mb-4">プロジェクトが見つかりませんでした。</h1>
+          <p className="text-muted-foreground">
+            指定されたプロジェクトは存在しないか、削除された可能性があります。
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="py-16">
-      <div className="container max-w-4xl">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">{project.title}</h1>
-          <div className="flex items-center gap-4 text-muted-foreground">
-            <Badge variant="secondary">{project.category}</Badge>
-            <span>{project.location}</span>
-            <span>
+    <div className="py-16 mobile-section">
+      <div className="container max-w-4xl mobile-container">
+        <div className="mb-8 md:mb-12">
+          <h1 className="text-balance text-compact">{project.title}</h1>
+          <div className="flex flex-wrap items-center gap-4 text-muted-foreground mt-4">
+            <Badge variant="secondary" className="text-sm">{project.category}</Badge>
+            <span className="text-sm">{project.location}</span>
+            <span className="text-sm">
               {format(new Date(project.completionDate), "yyyy年MM月完工", {
                 locale: ja,
               })}
@@ -189,9 +194,9 @@ export default function ProjectDetail() {
         </div>
 
         {project.beforeImageUrl && project.afterImageUrl && (
-          <Card className="mb-8">
+          <Card className="mb-8 md:mb-12">
             <CardHeader>
-              <CardTitle>施工前後の比較</CardTitle>
+              <CardTitle className="text-balance text-compact">施工前後の比較</CardTitle>
               <CardDescription>
                 スライダーを左右に動かして施工前後の状態を比較できます
               </CardDescription>
@@ -200,27 +205,27 @@ export default function ProjectDetail() {
               <BeforeAfterSlider
                 beforeImage={project.beforeImageUrl}
                 afterImage={project.afterImageUrl}
-                className="rounded-lg"
+                className="rounded-lg shadow-lg"
               />
             </CardContent>
           </Card>
         )}
 
         <Tabs defaultValue="overview" className="space-y-8">
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger value="overview">概要</TabsTrigger>
-            <TabsTrigger value="technical">技術情報</TabsTrigger>
-            <TabsTrigger value="process">施工プロセス</TabsTrigger>
-            <TabsTrigger value="achievements">実績・評価</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 gap-2">
+            <TabsTrigger value="overview" className="text-sm md:text-base">概要</TabsTrigger>
+            <TabsTrigger value="technical" className="text-sm md:text-base">技術情報</TabsTrigger>
+            <TabsTrigger value="process" className="text-sm md:text-base">施工プロセス</TabsTrigger>
+            <TabsTrigger value="achievements" className="text-sm md:text-base">実績・評価</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview">
             <Card>
               <CardHeader>
-                <CardTitle>プロジェクト概要</CardTitle>
+                <CardTitle className="text-balance text-compact">プロジェクト概要</CardTitle>
               </CardHeader>
               <CardContent className="space-y-8">
-                <p className="whitespace-pre-wrap">{project.description}</p>
+                <p className="whitespace-pre-wrap content-width">{project.description}</p>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {project.startDate && (
@@ -262,7 +267,7 @@ export default function ProjectDetail() {
                 </div>
 
                 {(project.environmentalMeasures || project.safetyMeasures) && (
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8 border-t">
                     {project.environmentalMeasures && (
                       <div className="space-y-3">
                         <h3 className="flex items-center gap-2 font-medium">
@@ -295,7 +300,7 @@ export default function ProjectDetail() {
           <TabsContent value="technical">
             <Card>
               <CardHeader>
-                <CardTitle>技術情報</CardTitle>
+                <CardTitle className="text-balance text-compact">技術情報</CardTitle>
               </CardHeader>
               <CardContent className="space-y-8">
                 {project.technicalHighlights && (
@@ -328,7 +333,7 @@ export default function ProjectDetail() {
           <TabsContent value="process">
             <Card>
               <CardHeader>
-                <CardTitle>施工プロセス</CardTitle>
+                <CardTitle className="text-balance text-compact">施工プロセス</CardTitle>
                 <CardDescription>
                   プロジェクトの進行状況と各フェーズの詳細をご確認いただけます
                 </CardDescription>
@@ -343,13 +348,11 @@ export default function ProjectDetail() {
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       className="relative"
                     >
-                      {/* 接続線 */}
                       {index < constructionProcess.length - 1 && (
                         <div className="absolute left-[17px] top-10 h-full w-[2px] bg-border" />
                       )}
 
                       <div className="flex gap-4">
-                        {/* アイコンと状態表示 */}
                         <div className="relative">
                           <div className={`
                             h-9 w-9 rounded-full 
@@ -360,7 +363,6 @@ export default function ProjectDetail() {
                               className: `h-5 w-5 ${step.status === 'completed' ? 'text-primary' : 'text-muted-foreground'}`
                             })}
                           </div>
-                          {/* 状態インジケーター */}
                           <div className={`
                             absolute -right-1 -bottom-1 h-4 w-4 rounded-full bg-white
                             flex items-center justify-center
@@ -372,7 +374,6 @@ export default function ProjectDetail() {
                           </div>
                         </div>
 
-                        {/* コンテンツ */}
                         <div className="flex-1 pb-8">
                           <div className="flex items-center justify-between mb-2">
                             <div className="font-medium text-lg">
@@ -386,7 +387,6 @@ export default function ProjectDetail() {
                             {step.description}
                           </p>
 
-                          {/* 詳細情報（アコーディオン） */}
                           <AnimatePresence>
                             <motion.div
                               initial={{ height: 0, opacity: 0 }}
@@ -423,7 +423,7 @@ export default function ProjectDetail() {
           <TabsContent value="achievements">
             <Card>
               <CardHeader>
-                <CardTitle>実績・評価</CardTitle>
+                <CardTitle className="text-balance text-compact">実績・評価</CardTitle>
               </CardHeader>
               <CardContent className="space-y-8">
                 {project.awards && (
@@ -454,9 +454,8 @@ export default function ProjectDetail() {
           </TabsContent>
         </Tabs>
 
-        {/* 関連プロジェクト */}
-        <section className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">関連プロジェクト</h2>
+        <section className="mt-16 md:mt-24">
+          <h2 className="text-2xl font-bold mb-6 text-balance text-compact">関連プロジェクト</h2>
           <RelatedProjects
             currentProjectId={project.id}
             category={project.category}
