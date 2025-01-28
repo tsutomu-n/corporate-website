@@ -14,7 +14,11 @@
 
 @layer components {
   .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl w-full;
+  }
+
+  .section-container {
+    @apply container mx-auto py-16 sm:py-24;
   }
 }
 
