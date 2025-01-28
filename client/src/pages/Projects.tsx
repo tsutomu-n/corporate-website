@@ -8,9 +8,20 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { civilEngineeringCategories } from "@/types/project";
 import { ProjectCardSkeleton, ProjectGridSkeleton } from "@/components/ui/project-card-skeleton";
+
+interface PaginatedResponse {
+  projects: Project[];
+  pagination: {
+    total: number;
+    pages: number;
+    current: number;
+  };
+}
+
+const ITEMS_PER_PAGE = 9;
 
 const categoryConfig: CategoryConfig = {
   [civilEngineeringCategories.SLOPE]: { icon: "⛰️", bgFrom: "from-orange-600", bgTo: "to-orange-500" },
@@ -35,8 +46,10 @@ export default function Projects() {
     year: null as number | null,
   });
 
-  const { data: projects, isLoading } = useQuery<Project[]>({
-    queryKey: ["/api/projects", filters],
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, isLoading } = useQuery<PaginatedResponse>({
+    queryKey: ["/api/projects", { ...filters, page: currentPage, limit: ITEMS_PER_PAGE }],
   });
 
   const resetFilters = () => {
@@ -46,6 +59,7 @@ export default function Projects() {
       region: "",
       year: null,
     });
+    setCurrentPage(1);
   };
 
   if (isLoading) {
@@ -62,6 +76,9 @@ export default function Projects() {
     );
   }
 
+  const projects = data?.projects ?? [];
+  const totalPages = data?.pagination.pages ?? 1;
+
   return (
     <div className="py-16">
       <div className="container">
@@ -75,83 +92,89 @@ export default function Projects() {
 
         <ProjectFilters
           filters={filters}
-          onChange={setFilters}
+          onChange={(newFilters) => {
+            setFilters(newFilters);
+            setCurrentPage(1);
+          }}
           onReset={resetFilters}
         />
 
-        <FadeInStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects?.map((project) => (
+        <FadeInStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          {projects.map((project) => (
             <FadeIn key={project.id}>
-              <Card
-                className="overflow-hidden group relative cursor-pointer transition-all duration-600 hover:shadow-2xl hover:-translate-y-2"
-              >
-                <div className="relative">
-                  <div
-                    className="aspect-video bg-cover bg-center transition-transform duration-600 group-hover:scale-120 group-hover:blur-[2px]"
-                    style={{ backgroundImage: `url(${project.imageUrl})` }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
-                  {project.subCategory && categoryConfig[project.subCategory] ? (
-                    <div className={`
-                      absolute left-0 top-0 h-full w-24
-                      bg-gradient-to-br 
-                      ${categoryConfig[project.subCategory].bgFrom} 
-                      ${categoryConfig[project.subCategory].bgTo}
-                      flex flex-col items-center justify-start
-                      p-4 text-white shadow-lg
-                      transition-all duration-300 group-hover:w-32
-                    `}>
-                      <span className="text-4xl mb-4 transform transition-transform duration-300 group-hover:scale-110">
-                        {categoryConfig[project.subCategory].icon}
-                      </span>
-                      <div className="writing-vertical-rl text-2xl font-bold tracking-wider">
-                        {project.subCategory}
-                      </div>
-                    </div>
-                  ) : (
+              <Link href={`/projects/${project.id}`}>
+                <Card className="overflow-hidden group relative cursor-pointer transition-all duration-600 hover:shadow-2xl hover:-translate-y-2">
+                  <div className="relative">
+                    <div
+                      className="aspect-video bg-cover bg-center transition-transform duration-600 group-hover:scale-110 group-hover:blur-[2px]"
+                      style={{ backgroundImage: `url(${project.imageUrl})` }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent transition-opacity duration-600 group-hover:opacity-90" />
                     <div className="absolute top-4 left-4">
                       <Badge variant="secondary" className="bg-white/90">
                         {project.category}
                       </Badge>
                     </div>
-                  )}
-                </div>
-                <CardHeader>
-                  <CardTitle className="group-hover:text-primary transition-colors flex items-center gap-2">
-                    {project.title}
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </CardTitle>
-                  <div className="text-sm text-muted-foreground">
-                    <p>{project.location}</p>
-                    <p>{new Date(project.completionDate).getFullYear()}年完工</p>
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-muted-foreground line-clamp-2">
-                    {project.description}
-                  </p>
-                </CardContent>
-                <div className="absolute inset-0 bg-gradient-radial from-black/80 via-black/70 to-black/90 opacity-0 group-hover:opacity-100 transition-all duration-600 flex items-center justify-center">
-                  <Link href={`/projects/${project.id}`}>
-                    <Button
-                      variant="default"
-                      size="lg"
-                      className="relative overflow-hidden bg-primary hover:bg-primary/90 text-white transform transition-all duration-600 group-hover:scale-120 px-12 py-8 text-xl font-medium shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.24)] active:scale-95 border-2 border-white/20"
-                    >
-                      <span className="relative z-10 flex items-center gap-3">
-                        詳細を見る
-                        <ArrowRight className="h-6 w-6 transition-transform duration-600 group-hover:translate-x-3" />
-                      </span>
-                      <span className="absolute inset-0 h-full w-full bg-gradient-to-r from-primary-foreground/0 via-primary-foreground/5 to-primary-foreground/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                    </Button>
-                  </Link>
-                </div>
-              </Card>
+                  <CardHeader>
+                    <CardTitle className="group-hover:text-primary transition-colors flex items-center gap-2">
+                      {project.title}
+                      <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    </CardTitle>
+                    <div className="text-sm text-muted-foreground">
+                      <p>{project.location}</p>
+                      <p>{new Date(project.completionDate).getFullYear()}年完工</p>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground line-clamp-2">
+                      {project.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </Link>
             </FadeIn>
           ))}
         </FadeInStagger>
 
-        {projects?.length === 0 && (
+        {/* Pagination Controls */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="touch-target"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <div className="flex items-center gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? "default" : "outline"}
+                  size="icon"
+                  onClick={() => setCurrentPage(page)}
+                  className="touch-target"
+                >
+                  {page}
+                </Button>
+              ))}
+            </div>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+              className="touch-target"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+
+        {projects.length === 0 && (
           <div className="text-center py-12">
             <p className="text-lg text-muted-foreground">
               該当するプロジェクトが見つかりませんでした。
