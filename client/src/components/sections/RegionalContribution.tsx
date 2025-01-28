@@ -41,10 +41,10 @@ export default function RegionalContribution() {
       <div className="container relative">
         <FadeIn>
           <div className="max-w-2xl mx-auto text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4 text-balance text-compact">
               地域インフラへの貢献
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-lg text-muted-foreground content-width mx-auto">
               全国各地のインフラ整備を通じて、<br className="hidden sm:inline" />
               地域社会の発展と安全に貢献しています
             </p>
@@ -68,7 +68,7 @@ export default function RegionalContribution() {
                   className="bg-gradient-to-br from-white to-gray-50/80 rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300"
                 >
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-xl font-bold">{region.name}</h3>
+                    <h3 className="text-xl font-bold text-compact">{region.name}</h3>
                     <span className="text-2xl font-bold text-primary">
                       {region.projectCount}
                       <span className="text-sm ml-1">件</span>
@@ -90,7 +90,12 @@ export default function RegionalContribution() {
 
         <FadeIn>
           <div className="text-center">
-            <Button size="lg" variant="outline" asChild>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg font-medium"
+              asChild
+            >
               <Link href="/projects" className="group">
                 すべての施工実績を見る
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />

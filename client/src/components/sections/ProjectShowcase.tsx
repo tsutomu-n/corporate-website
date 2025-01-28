@@ -33,10 +33,10 @@ export default function ProjectShowcase() {
       <div className="container relative">
         <FadeIn>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6 text-balance text-compact">
               大規模プロジェクトの実績
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground content-width mx-auto">
               確かな技術力と品質管理で完遂した代表的なプロジェクトをご紹介します
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function ProjectShowcase() {
                       <span className="inline-block bg-primary/90 px-4 py-1.5 text-sm font-medium rounded-full mb-4">
                         {project.category}
                       </span>
-                      <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                      <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors text-balance text-compact">
                         {project.title}
                       </h3>
                       <p className="text-lg text-gray-200 line-clamp-2">
@@ -74,6 +74,7 @@ export default function ProjectShowcase() {
                     <Button
                       variant="outline-white"
                       size="lg"
+                      className="text-lg font-medium"
                     >
                       詳細を見る
                       <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -90,10 +91,11 @@ export default function ProjectShowcase() {
             <Button 
               size="lg" 
               variant="outline"
+              className="text-lg font-medium"
               asChild
             >
               <Link href="/projects" className="group">
-                <span className="text-lg">すべての実績を見る</span>
+                <span>すべての実績を見る</span>
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
