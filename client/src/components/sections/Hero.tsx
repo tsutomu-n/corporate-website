@@ -28,13 +28,13 @@ export default function Hero() {
             安全で快適な社会インフラの構築に貢献します。
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8" asChild>
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8 font-medium" asChild>
               <Link href="/contact">お問い合わせ</Link>
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
-              className="text-white border-white hover:bg-white/10 text-lg px-8" 
+              className="bg-white/10 text-white border-white hover:bg-white/20 text-lg px-8 font-medium transition-colors" 
               asChild
             >
               <Link href="/projects">施工実績を見る</Link>
