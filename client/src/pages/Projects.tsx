@@ -10,6 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { Link } from "wouter";
 import { ArrowRight } from "lucide-react";
 import { civilEngineeringCategories } from "@/types/project";
+import { ProjectCardSkeleton, ProjectGridSkeleton } from "@/components/ui/project-card-skeleton";
 
 const categoryConfig: CategoryConfig = {
   [civilEngineeringCategories.SLOPE]: { icon: "⛰️", bgFrom: "from-orange-600", bgTo: "to-orange-500" },
@@ -51,9 +52,11 @@ export default function Projects() {
     return (
       <div className="py-16">
         <div className="container">
-          <Skeleton className="h-8 w-2/3 mb-4" />
-          <Skeleton className="h-6 w-1/2 mb-8" />
-          <Skeleton className="h-[400px] w-full" />
+          <div className="text-center mb-12">
+            <Skeleton className="h-10 w-48 mx-auto mb-4" />
+            <Skeleton className="h-6 w-96 mx-auto" />
+          </div>
+          <ProjectGridSkeleton />
         </div>
       </div>
     );
