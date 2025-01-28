@@ -5,11 +5,27 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { FadeIn, FadeInStagger } from "@/components/ui/fade-in";
 import type { Project } from "@db/schema";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProjectShowcase() {
-  const { data: projects } = useQuery<Project[]>({
+  const { data: projects, isLoading } = useQuery<Project[]>({
     queryKey: ["/api/projects/featured"],
   });
+
+  if (isLoading) {
+    return (
+      <section className="section-container">
+        <div className="space-y-8">
+          <Skeleton className="h-12 w-2/3 mx-auto" />
+          <Skeleton className="h-6 w-1/2 mx-auto" />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <Skeleton className="h-[400px] rounded-xl" />
+            <Skeleton className="h-[400px] rounded-xl" />
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative py-24 overflow-hidden">
@@ -17,17 +33,17 @@ export default function ProjectShowcase() {
       <div className="container relative">
         <FadeIn>
           <div className="max-w-3xl mx-auto text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl mb-4">
+            <h2 className="text-4xl font-bold tracking-tight sm:text-5xl mb-6">
               大規模プロジェクトの実績
             </h2>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-xl text-muted-foreground">
               確かな技術力と品質管理で完遂した代表的なプロジェクトをご紹介します
             </p>
           </div>
         </FadeIn>
 
         <FadeInStagger className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-          {projects?.slice(0, 2).map((project, index) => (
+          {projects?.slice(0, 2).map((project) => (
             <FadeIn key={project.id}>
               <Link href={`/projects/${project.id}`}>
                 <motion.div
@@ -44,23 +60,24 @@ export default function ProjectShowcase() {
 
                   {/* Content */}
                   <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                    <div className="mb-4">
+                    <div className="mb-6">
                       <span className="inline-block bg-primary/90 px-4 py-1.5 text-sm font-medium rounded-full mb-4">
                         {project.category}
                       </span>
                       <h3 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
                         {project.title}
                       </h3>
-                      <p className="text-gray-200 line-clamp-2 mb-6">
+                      <p className="text-lg text-gray-200 line-clamp-2">
                         {project.description}
                       </p>
                     </div>
                     <Button
                       variant="outline"
+                      size="lg"
                       className="text-white border-white hover:bg-white/10 transition-all"
                     >
                       詳細を見る
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                      <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
                     </Button>
                   </div>
                 </motion.div>
@@ -73,7 +90,7 @@ export default function ProjectShowcase() {
           <div className="text-center">
             <Button size="lg" variant="outline" asChild>
               <Link href="/projects" className="group">
-                すべての実績を見る
+                <span className="text-lg px-8">すべての実績を見る</span>
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>

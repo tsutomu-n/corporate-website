@@ -18,20 +18,25 @@ export default function Hero() {
       {/* Content */}
       <div className="container relative z-10">
         <div className="max-w-2xl text-white">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-bold mb-8 leading-tight">
             確かな技術と実績で、<br />
             未来のインフラを創造する
           </h1>
-          <p className="text-lg md:text-xl mb-8 text-gray-200">
+          <p className="text-xl md:text-2xl mb-12 text-gray-200 leading-relaxed">
             創業50年の信頼と実績。<br />
             確かな品質と最新技術で、<br />
             安全で快適な社会インフラの構築に貢献します。
           </p>
-          <div className="flex gap-4">
-            <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8" asChild>
               <Link href="/contact">お問い合わせ</Link>
             </Button>
-            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10" asChild>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-white border-white hover:bg-white/10 text-lg px-8" 
+              asChild
+            >
               <Link href="/projects">施工実績を見る</Link>
             </Button>
           </div>
