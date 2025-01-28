@@ -72,9 +72,8 @@ export default function ProjectShowcase() {
                       </p>
                     </div>
                     <Button
-                      variant="outline"
+                      variant="outline-white"
                       size="lg"
-                      className="text-white border-white hover:bg-white/10 transition-all"
                     >
                       詳細を見る
                       <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -88,9 +87,13 @@ export default function ProjectShowcase() {
 
         <FadeIn>
           <div className="text-center">
-            <Button size="lg" variant="outline" asChild>
+            <Button 
+              size="lg" 
+              variant="outline"
+              asChild
+            >
               <Link href="/projects" className="group">
-                <span className="text-lg px-8">すべての実績を見る</span>
+                <span className="text-lg">すべての実績を見る</span>
                 <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
               </Link>
             </Button>
