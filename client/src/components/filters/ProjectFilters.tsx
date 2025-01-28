@@ -84,7 +84,7 @@ export function ProjectFilters({
               <SelectValue placeholder="工事カテゴリー" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">すべてのカテゴリー</SelectItem>
+              <SelectItem value="all">すべてのカテゴリー</SelectItem>
               {CATEGORIES.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name}
@@ -104,7 +104,7 @@ export function ProjectFilters({
               <SelectValue placeholder="地域" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">すべての地域</SelectItem>
+              <SelectItem value="all">すべての地域</SelectItem>
               {REGIONS.map((region) => (
                 <SelectItem key={region.id} value={region.id}>
                   {region.name}
@@ -115,16 +115,16 @@ export function ProjectFilters({
 
           {/* 年度フィルター */}
           <Select
-            value={filters.year?.toString() ?? ""}
+            value={filters.year?.toString() ?? "all"}
             onValueChange={(value) =>
-              onChange({ ...filters, year: value ? parseInt(value) : null })
+              onChange({ ...filters, year: value === "all" ? null : parseInt(value) })
             }
           >
             <SelectTrigger>
               <SelectValue placeholder="完工年度" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">すべての年度</SelectItem>
+              <SelectItem value="all">すべての年度</SelectItem>
               {YEARS.map((year) => (
                 <SelectItem key={year} value={year.toString()}>
                   {year}年
